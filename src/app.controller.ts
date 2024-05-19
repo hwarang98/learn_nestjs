@@ -1,13 +1,22 @@
-import { Controller, Get, Param, Req, Body } from '@nestjs/common';
-import { AppService } from './app.service';
-import { Request } from 'express';
+import {
+  Controller,
+  Get,
+  Param,
+  Req,
+  Body,
+  Post,
+  UseInterceptors,
+  UseFilters,
+} from "@nestjs/common";
+import { AppService } from "./app.service";
+import { Request } from "express";
+import { CatsRequestDto } from "./cats/dto/cats.request.dto";
+import { SuccessInterceptor } from "./common/interceptors/success.interceptor";
+import { HttpExceptionFilter } from "./common/exceptions/http-exception.filter";
 
-@Controller('cats')
+@Controller()
+@UseInterceptors(SuccessInterceptor)
+@UseFilters(HttpExceptionFilter)
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get('hello')
-  getHello(): string {
-    return this.appService.getHello();
-  }
 }
